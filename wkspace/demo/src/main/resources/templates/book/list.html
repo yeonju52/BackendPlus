@@ -5,11 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    th, td { padding: 3px; }
+    th, td, select, input, button { padding: 3px; }
   </style>
   <script>
+    function handleEnter(event) {
+      if (event.key === 'Enter') {  // javascript 등호연산자: == (x) === (o)
+        event.preventDefault();     // 줄바꿈 방지
+        search();
+      }
+    }
+    function search() {
+      const field = document.getElementById('field').value;
+      const query = document.getElementById('query').value;
+      const uri = '/book/list?p=1' + '&f=' + field + '&q=' + query;
+      location.href = encodeURI(uri);   // 한글 입력시 인코딩해서 전달
+    }
     function gotoPage() {
-      let page = document.getElementById('page').value;
+      const page = document.getElementById('page').value;
       location.href = '/book/list?p=' + page;
     }
   </script>
@@ -18,6 +30,13 @@
   <h1>도서 목록
     <span style="font-size: 16px; margin-left: 100px;">
       <a th:href="@{/book/insert}">도서 등록</a>
+      <select id="field" style="margin-left: 40px">
+        <option value="title" selected>제목</option>
+        <option value="author">저자</option>
+        <option value="company">출판사</option>
+        <option value="summary">요약</option>
+      </select>
+      <input type="text" id="query" placeholder="검색" onkeydown="handleEnter(event)">
       <span style="margin-left: 40px">페이지</span>
       <input type="text" id="page" value="1">
       <button onclick="gotoPage()">페이지 이동</button>
@@ -38,6 +57,9 @@
       <td th:text="${book.bid}">1</td>
       <td style="text-align: center;">
         <img th:src="${book.imageUrl}" height="60">
+      </td>
+      <td>
+        <a th:href="@{/book/detail/{x}(x=${book.bid}, q=${query})}">[[${book.title}]]</a>
       </td>
       <td th:text="${book.title}">트렌드 코리아 2025</td>
       <td th:text="${book.author}">김난도 외 9명</td>

@@ -11,6 +11,8 @@ public interface BookService {
 
     List<Book> getBooksByPage(int page);
 
+    List<Book> getBookList(int page, String field, String query);
+
     void insertBook(Book book);
 
     void updateBook(Book book);

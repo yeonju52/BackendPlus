@@ -8,9 +8,11 @@ import com.lion.demo.repository.BookRepository;
 import com.lion.demo.repository.CartRepository;
 import com.lion.demo.repository.OrderRepository;
 import com.lion.demo.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired private UserRepository userRepository;
 
     @Override
+    @Transactional
     public Order createOrder(String uid, List<Cart> cartList) {
         User user = userRepository.findById(uid).orElse(null);
         Order order = Order.builder()

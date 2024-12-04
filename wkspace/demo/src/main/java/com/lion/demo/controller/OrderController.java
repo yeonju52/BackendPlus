@@ -1,8 +1,8 @@
 package com.lion.demo.controller;
 
-import com.lion.demo.entity.Cart;
-import com.lion.demo.entity.Order;
-import com.lion.demo.entity.OrderItem;
+import com.lion.demo.aspect.CheckPermission;
+import com.lion.demo.aspect.LogExecutionTime;
+import com.lion.demo.entity.*;
 import com.lion.demo.service.BookService;
 import com.lion.demo.service.CartService;
 import com.lion.demo.service.OrderService;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/order")
@@ -30,7 +32,9 @@ public class OrderController {
     public String createOrder(HttpSession session) {
         String uid = (String) session.getAttribute("sessUid");
         List<Cart> cartList = cartService.getCartItemsByUser(uid);
-        Order order = orderService.createOrder(uid, cartList);
+        if (cartList.size() != 0) {
+            Order order = orderService.createOrder(uid, cartList);
+        }
         //        System.out.println(order); // Order - OrderItem 양방향 참조 (연관관계로 설정했기 때문에 호출 시 무한루프에 빠진다.)
         //        # ISSUE: java.lang.StackOverflowError: null
         //        # 무한루프 발생 예쌍. 왜 문제가 생기나?
@@ -63,6 +67,7 @@ public class OrderController {
     }
 
     @GetMapping("/listAll")
+    @CheckPermission("ROLE_ADMIN")
     public String listAll(Model model) {
         // 2024년 12월
         LocalDateTime startTime = LocalDateTime.of(2024, 12, 1, 0, 0);
@@ -86,5 +91,44 @@ public class OrderController {
         model.addAttribute("totalRevenue", totalRevenue);
         model.addAttribute("totalBooks", totalBooks);
         return "order/listAll";
+    }
+
+    @GetMapping("/bookStat")
+    @LogExecutionTime
+    public String bookStat(Model model){
+        // 2024년 12월
+        LocalDateTime startTime = LocalDateTime.of(2024, 12, 1, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2024, 12, 31, 23, 59, 59, 999999999);
+        List<Order> orderList = orderService.getOrdersByDateRange(startTime, endTime);
+        Map<Long, BookStat> map = new HashMap<>();
+
+        for (Order order : orderList){
+            List<OrderItem> orderItems = order.getOrderItems();
+            for (OrderItem item : orderItems){
+                long bid = item.getBook().getBid();
+                if (map.containsKey(bid)) { // map에 key값이 존재
+                    BookStat bookStat = map.get(bid);
+                    bookStat.setQuantity(bookStat.getQuantity() + item.getQuantity());
+                    map.replace(bid, bookStat);
+                } else { // map에 key값이 없는 경우
+                    BookStat bookStat = BookStat.builder()
+                            .bid(bid)
+                            .title(item.getBook().getTitle())
+                            .company(item.getBook().getCompany())
+                            .unitPrice(item.getBook().getPrice())
+                            .quantity(item.getQuantity())
+                            .build();
+                    map.put(bid, bookStat);
+                }
+            }
+        }
+        List<BookStat> bookStatList = new ArrayList<>();
+        for (Map.Entry<Long, BookStat> entry : map.entrySet()) {
+            BookStat bookStat = entry.getValue();
+            bookStat.setTotalPrice(bookStat.getUnitPrice() * bookStat.getQuantity());
+            bookStatList.add(bookStat);
+        }
+        model.addAttribute("bookStatList", bookStatList);
+        return "order/bookStat";
     }
 }

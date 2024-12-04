@@ -4,12 +4,9 @@ import com.lion.demo.entity.Book;
 import com.lion.demo.service.BookService;
 import com.lion.demo.service.CsvFileReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,16 +18,43 @@ public class BookController {
 
     @GetMapping("/list")
     public String list(@RequestParam(name="p", defaultValue = "1") int page,
-                       Model model){
-        List<Book> bookList = bookService.getBooksByPage(page);
-//        System.out.println(">>>>>>>>>>>>>" + bookList.size());
+                       @RequestParam(name="f", defaultValue = "title") String field,
+                       @RequestParam(name="q", defaultValue = "") String query,
+                       Model model) {
+//        List<Book> bookList = bookService.getBooksByPage(page);
+        List<Book> bookList = bookService.getBookList(page, field, query);
         model.addAttribute("bookList", bookList);
+        model.addAttribute("query", query);
         return "book/list";
     }
 
+    @GetMapping("/detail/{bid}")
+    public String detail(@PathVariable long bid,
+                         @RequestParam(name="q", defaultValue = "") String query,
+                         Model model){
+        Book book = bookService.findByBid(bid);
+        if (!query.equals("")) {
+            String highlightedSummary = book.getSummary()
+                    .replaceAll(query, "<span style='background-color: skyblue;'>" + query + "</span>");
+            book.setSummary(highlightedSummary);
+        }
+        model.addAttribute("book", book);
+        return "book/detail";
+    }
+
+    @GetMapping("/insert")
+    public String insertForm() {
+        return "book/insert";
+    }
+    @PostMapping("/insert")
+    public String insertProc(Book book) {
+        bookService.insertBook(book);
+        return "redirect:/book/list";
+    }
+    // 초기 데이터
     @GetMapping("/yes24")
     public String yes24() {
         csvFileReaderService.csvFileToH2();
-        return "redirect:/user/list";
+        return "redirect:/book/list";
     }
 }

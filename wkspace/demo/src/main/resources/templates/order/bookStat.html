@@ -23,7 +23,7 @@
       <th>제목</th>
       <th>출판사</th>
       <th>단가</th>
-      <th>수량</th>
+      <th>판매 수량</th>
       <th>판매 금액</th>
     </tr>
     <tr th:each="bs: ${bookStatList}">
@@ -32,7 +32,7 @@
       <td th:text="${bs.title}">제목</td>
       <td th:text="${bs.company}">출판사</td>
       <td th:text="${bs.unitPrice}">단가</td>
-      <td th:text="${bs.quantity}">수량</td>
+      <td th:text="${bs.quantity}">판매 수량</td>
       <td th:text="${bs.totalPrice}">판매 금액</td>
     </tr>
   </table>

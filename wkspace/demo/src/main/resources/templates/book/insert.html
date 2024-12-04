@@ -12,6 +12,7 @@
     <h1>도서 등록</h1>
     <hr>
     <form action="/book/insert" method="post">
+        <!-- 실제 객체인 Book의 bid 타입은 Long이다. 하지만, bid가 생성자이므로 "0"으로 받은 후 bid long 타입 따로 지정해야함 -->
         <input type="hidden" name="bid" value="0">
         <input type="text" name="title" placeholder="제목"><br><br>
         <input type="text" name="author" placeholder="저자"><br><br>
