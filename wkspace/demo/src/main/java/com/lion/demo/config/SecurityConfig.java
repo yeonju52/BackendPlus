@@ -1,13 +1,20 @@
 package com.lion.demo.config;
 
+import com.lion.demo.security.JwtRequestFilter;
+import com.lion.demo.security.MyOAuth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 public class SecurityConfig {
-
+    @Autowired private AuthenticationFailureHandler failureHandler;
+    @Autowired private MyOAuth2UserService myOAuth2UserService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(auth -> auth.disable())   // CRSF 방어 기능 비활성화: 인수로 람다함수 (화살표함수)를 넣어야 함
@@ -27,13 +34,33 @@ public class SecurityConfig {
                         .usernameParameter("uid")
                         .passwordParameter("pwd")
                         .defaultSuccessUrl("/user/loginSuccess", true)  // 로그인 후 해야할 일들
+                        .failureHandler(failureHandler)
                         .permitAll()
                 ).logout(auth -> auth
                         .logoutUrl("/user/logout")
                         .invalidateHttpSession(true)        // 로그아웃시 세션 삭제
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/user/login")
+                ).oauth2Login(auth -> auth
+                        .loginPage("/user/login")
+                        // 1. 코드받기 (인증) 2. 액세스 토큰(권한) 3. 사용자 정보 획득
+                        // 4. 3.에서 받은 정보를 토대로 DB에 없으면 등록(가입)
+                        // 5. provider가 제공하는 정보
+                        .userInfoEndpoint(user -> user.userService(myOAuth2UserService))
+                        .defaultSuccessUrl("/user/loginSuccess", true)  // 로그인 후 해야할 일들
                 );
         return http.build();
+    }
+
+    // JWT Filter Bean 등록
+    @Bean
+    public JwtRequestFilter jwtRequestFilter() {
+        return new JwtRequestFilter();
+    }
+
+    // Authentication Manager 빈 등록
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
