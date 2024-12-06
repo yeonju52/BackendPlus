@@ -44,8 +44,9 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(HttpSession session, Model model) {
         List<User> userList = userService.getUsers();
+        session.setAttribute("menu", "user");
         model.addAttribute("userList", userList);
         return "user/list";
     }
@@ -91,6 +92,7 @@ public class UserController {
             session.setAttribute("sessUid", uid);
             session.setAttribute("sessUname", user.getUname());
             msg = user.getUname() + "님 환영합니다.";
+
             url = "/mall/list";
         } else if (result == UserService.WRONG_PASSWORD) {
             msg = "패스워드가 틀렸습니다.";
@@ -114,7 +116,13 @@ public class UserController {
         session.setAttribute("sessUid", uid);
         session.setAttribute("sessUname", user.getUname());
         String msg = user.getUname() + "님 환영합니다.";
-        String url = "/mall/list";
+        String url;
+        if (user.getRole().equals("ROLE_ADMIN")){
+            url = "/user/list";
+        }
+        else {
+            url = "/book/list";
+        }
         model.addAttribute("msg", msg);
         model.addAttribute("url", url);
         return "common/alertMsg";

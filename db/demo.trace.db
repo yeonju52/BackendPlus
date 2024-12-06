@@ -368,3 +368,6 @@ update [42001-224]
 2024-12-05 15:46:03.761078+09:00 jdbc[14]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]USERS"; expected "UPDATE"; SQL statement:
 USERS [42001-224]
+2024-12-06 17:29:58.594087+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE USERS SET PROFILE_URL [*]""https://res.cloudinary.com/dzipczn1r/image/upload/c_thumb,g_auto,h_500,h_500/GitHub-logo_pk5mzf.png” WHERE PROFILE_URL is null"; SQL statement:
+UPDATE USERS SET PROFILE_URL "https://res.cloudinary.com/dzipczn1r/image/upload/c_thumb,g_auto,h_500,h_500/GitHub-logo_pk5mzf.png” WHERE PROFILE_URL is null [42000-224]
