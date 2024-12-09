@@ -1,0 +1,26 @@
+package com.lion.demo.misc;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.prometheusmetrics.PrometheusConfig;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.TimeUnit;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToLongFunction;
+
+@Configuration
+public class MiscConfig {
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public MeterRegistry meterRegistry() {
+//        Prometheus 사용
+        return new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+    }
+}
