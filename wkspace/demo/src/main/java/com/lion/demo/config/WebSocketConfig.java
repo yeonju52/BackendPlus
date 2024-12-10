@@ -1,5 +1,8 @@
-package com.lion.demo.websocket;
+package com.lion.demo.config;
 
+import com.lion.demo.websocket.EchoWebSocketHandler;
+import com.lion.demo.websocket.PersonalWebSocketHandler;
+import com.lion.demo.websocket.UserHandshakeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

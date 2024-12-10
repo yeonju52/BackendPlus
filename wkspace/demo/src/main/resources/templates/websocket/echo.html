@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>WebSocket Echo</title>
-    <script>
-        function echo() {
-            const socket = new WebSocket('ws://localhost:8090/echo');
+	<meta charset="UTF-8">
+	<title>WebSocket Echo</title>
+	<script>
+		function echo() {
+			const socket = new WebSocket('ws://localhost:8090/echo');
 
-            socket.onopen = () => {
-                console.log('Connected.');
-                socket.send('Hello everyone!');
-            }
-            socket.onmessage = event => {
-                console.log('Message from server: ' + event.data);
-            }
-            socket.onclose = () => {
-                console.log('Disconnected.');
-            }
-        }
-    </script>
+			socket.onopen = () => {
+				console.log('Connected.');
+				socket.send('Hello everyone!');
+			}
+			socket.onmessage = event => {
+				console.log('Message from server: ' + event.data);
+			}
+			socket.onclose = () => {
+				console.log('Disconnected.');
+			}
+		}
+	</script>
 </head>
 <body style="margin: 40px;">
-    <h1>WebSocket - Echo</h1>
-    <button onclick="echo()">전송</button>
+	<h1>WebSocket - Echo</h1>
+	<button onclick="echo()">전송</button>
 </body>
 </html>
