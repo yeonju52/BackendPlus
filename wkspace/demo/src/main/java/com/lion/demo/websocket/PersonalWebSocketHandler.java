@@ -30,7 +30,7 @@ public class PersonalWebSocketHandler extends TextWebSocketHandler {
         String userId = getUserId(session);
         String payload = message.getPayload();      // recipientId : message
         String[] parts = payload.split(":", 2);
-        System.out.println("Received message: " + payload);
+//        System.out.println("Received message: " + payload);
 
         if (parts.length == 2) {
             String recipientId = parts[0];

@@ -16,7 +16,7 @@ public class UserHandshakeInterceptor implements HandshakeInterceptor {
             String userId = httpRequest.getServletRequest().getParameter("userId");
             if (userId != null) {
                 attributes.put("userId", userId);
-                System.out.println("=========== beforeHandshake(): " + userId);
+//                System.out.println("=========== beforeHandshake(): " + userId);
             } else {
                 System.out.println("=========== beforeHandshake(): userId is null.");
             }
