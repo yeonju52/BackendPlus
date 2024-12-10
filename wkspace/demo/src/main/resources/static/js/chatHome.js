@@ -1,10 +1,12 @@
+
 let socket;
-let userId, recipientId, chattingStatus;
+let userId, recipientId;
 
 function connect() {
 	userId = document.getElementById('userId').value;
-    chattingStatus = document.getElementById('chattingStatus').value;
-	socket = new WebSocket('ws://localhost:8090/chat?userId=' + userId + '&status=' + chattingStatus);
+    const chattingStatus = document.getElementById('chattingStatus').value;
+    const serverPort = $('#serverPort').val();
+	socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
 
 	socket.onopen = () => {
 		console.log('Connected as ' + userId);
@@ -70,4 +72,59 @@ function disconnect() {
 	} else {
 		alert('WebSocket is not connected.');
 	}
+}
+
+function handlePopover() {
+    // Popover 초기화
+    const popoverTrigger = document.getElementById('addFriendPopover');
+    const popover = new bootstrap.Popover(popoverTrigger, {
+        trigger: 'manual', html: true, placement: 'bottom', title: '친구 추가',
+        content: document.getElementById('mypopover-content')
+    });
+
+    // 팝오버 열기
+    popoverTrigger.addEventListener('click', function(event) {
+        event.stopPropagation(); // 이벤트 버블링 방지
+        if (popoverTrigger.getAttribute('aria-expanded') === 'true') {
+            popover.hide();
+        } else {
+            popover.show();
+        }
+    });
+
+    // Popover 열렸을 때 버튼 클릭 이벤트 바인딩
+    document.addEventListener('shown.bs.popover', function () {
+        const addButton = document.getElementById('addFriendButton');
+        const closeButton = document.getElementById('closePopoverButton');
+        if (addButton) {
+            addButton.addEventListener('click', function () {
+                const friendUid = document.getElementById('friendUid').value.trim();
+                if (friendUid !== '') {
+                    if (confirm(`친구 ${friendUid}를 추가합니다.`)) {
+                        // 서버에 AJAX 요청 예시
+                        $.post('/chatting/addFriend', { friendUid: friendUid }, function (response) {
+                            console.log('친구 추가 성공:', response);
+                            fetchChatterList();
+                        });
+                    }
+                    popover.hide();
+                } else {
+                    alert('친구 ID를 입력하세요.');
+                }
+            });
+        }
+        if (closeButton) {
+            closeButton.onclick = function () {
+                popover.hide();
+            };
+        }
+    });
+
+    // 팝오버 외부를 클릭하면 닫기
+    document.addEventListener('click', function (event) {
+        const popoverElement = document.querySelector('.popover');
+        if (popoverElement && !popoverElement.contains(event.target) && event.target !== popoverTrigger) {
+            popover.hide();
+        }
+    });
 }

@@ -117,12 +117,13 @@ public class UserController {
         session.setAttribute("sessUname", user.getUname());
         String msg = user.getUname() + "님 환영합니다.";
         String url;
-        if (user.getRole().equals("ROLE_ADMIN")){
-            url = "/user/list";
-        }
-        else {
-            url = "/book/list";
-        }
+        url = "/chatting/home";
+//        if (user.getRole().equals("ROLE_ADMIN")){
+//            url = "/user/list";
+//        }
+//        else {
+//            url = "/book/list";
+//        }
         model.addAttribute("msg", msg);
         model.addAttribute("url", url);
         return "common/alertMsg";

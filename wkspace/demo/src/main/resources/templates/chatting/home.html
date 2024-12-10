@@ -11,8 +11,9 @@
   <script src="/js/chatHome.js"></script>
   <script>
     window.onload = () => {
-
+      connect();
       fetchChatterList();
+      handlePopover();
     }
   </script>
 </head>
@@ -35,6 +36,8 @@
 						<div class="col-6">
               <input type="hidden" id="userId" th:value="${session.sessUid}">
               <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
+							<input type="hidden" id="serverPort" th:value="${session.serverPort}">
+			  <input type="hidden" id="serverPort" th:value="${session.serverPort}">
 							<table class="table">
 								<thead>
 									<tr>
@@ -66,6 +69,19 @@
 			</div>
 		</div>
   </div>
+	<div hidden>
+		<div id="mypopover-content">
+			<div class="row" style="vertical-align: middle;">
+				<div class="col-7">
+					<input type="text" id="friendUid" class="form-control  form-control-sm" placeholder="친구 ID">
+				</div>
+				<div class="col-5">
+					<a href="#" id="addFriendButton"><span class="badge bg-primary">추가</span></a>
+					<a href="#" id="closePopoverButton"><span class="badge bg-secondary ms-1">닫기</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

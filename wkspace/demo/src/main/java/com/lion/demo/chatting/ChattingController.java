@@ -5,6 +5,7 @@ import com.lion.demo.service.UserService;
 import com.lion.demo.util.TimeUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +22,16 @@ public class ChattingController {
     @Autowired private RecipientService recipientService;
     @Autowired private UserService userService;
     @Autowired private TimeUtil timeUtil;
+    @Value(("${server.port}")) private String serverPort;
 
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
         String sessUid = (String) session.getAttribute("sessUid");
-        session.setAttribute("chattingStatus", "home");
         User user = userService.findByUid(sessUid);
         model.addAttribute("user", user);
+
+        session.setAttribute("chattingStatus", "home");
+        session.setAttribute("serverPort", serverPort);
         session.setAttribute("menu", "chatting");
         return "chatting/home";
     }
@@ -54,6 +58,16 @@ public class ChattingController {
         return ResponseEntity.ok(chatterList);
     }
 
+    @PostMapping("/addFriend")
+    @ResponseBody
+    public String addFriend(String friendUid, HttpSession session) {
+        String sessUid = (String) session.getAttribute("sessUid");
+        User user = userService.findByUid(sessUid);
+        User friend = userService.findByUid(friendUid);
+        recipientService.insertFriend(user, friend);
+        return "";
+    }
+
     @GetMapping("/mock")
     public String mockForm() {
         return "chatting/mock";
@@ -67,7 +81,7 @@ public class ChattingController {
                 .sender(sender).recipient(recipient).message(message).timestamp(timestamp).hasRead(0)
                 .build();
         chatMessageService.insertChatMessage(chatMessage);
-//        recipientService.insertFriend(sender, recipient);
+//        recipientService.insertFriend(sender, recipient); // recipient (채팅창 명단 만들기 위함)
         return "redirect:/chatting/mock";
     }
 }
