@@ -50,4 +50,8 @@ public class CartRepositoryTest {
         assertThat(foundCart.getBook().getPrice()).isEqualTo(15000);
         assertThat(foundCart.getQuantity()).isEqualTo(3);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 75f1fdd (6일차: test 앱 잘못된 경로 수정)

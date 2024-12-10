@@ -54,4 +54,8 @@ public class BookRepositoryTest {
         assertThat(bookList.get(0).getAuthor()).isEqualTo("author");
         assertThat(bookList.get(0).getPrice()).isEqualTo(20000);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 75f1fdd (6일차: test 앱 잘못된 경로 수정)
