@@ -7,10 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToLongFunction;
-
 @Configuration
 public class MiscConfig {
     @Bean

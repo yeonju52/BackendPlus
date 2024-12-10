@@ -21,7 +21,8 @@ public class SecurityConfig {
         http.csrf(auth -> auth.disable())       // CSRF 방어 기능 비활성화
                 .headers(x -> x.frameOptions(y -> y.disable()))     // H2-console
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/book/list", "/book/detail/**", "/misc/**",
+                        .requestMatchers("/book/list", "/book/detail/**", "/misc/**", "/actuator/**",
+                                "/websocket/**", "/echo", "/personal",
                                 "/mall/list", "/mall/detail/**", "/user/register", "/h2-console", "/demo/**",
                                 "/img/**", "/js/**", "/css/**", "/error/**").permitAll()
                         .requestMatchers("/book/insert", "/book/yes24", "/order/listAll",
