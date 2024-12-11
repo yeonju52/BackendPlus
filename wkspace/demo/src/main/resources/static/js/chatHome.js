@@ -1,4 +1,3 @@
-
 let socket;
 let userId, recipientId;
 
@@ -46,7 +45,7 @@ function updateChatterList(chatterList) {
 
         row.innerHTML = `
             <td style="text-align: center;">
-                <img src="${chatter.friendProfileUrl}" alt="${chatter.friendUname}" width="40" style="border-radius: 50%">
+                <img src="${chatter.friendProfileUrl}" alt="${chatter.friendUname}" width="40" style="border-radius: 50%; text-align: center;">
             </td>
             <td>
                 <a href="/chatting/chat/${chatter.friendUid}">

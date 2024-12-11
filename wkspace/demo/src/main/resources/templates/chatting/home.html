@@ -2,12 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <header th:replace="~{fragments/base :: head}"></header>
-  <style>
-    th { text-align: center; }
-    td { vertical-align: middle; }
-    .new-count { background-color: red; font-size: 0.6rem; color: white;
-			border-radius: 50%; padding: 1px 5px; line-height: 1; }
-  </style>
+  <link href="/css/chatHome.css" rel="stylesheet">
   <script src="/js/chatHome.js"></script>
   <script>
     window.onload = () => {
@@ -36,19 +31,17 @@
 						<div class="col-6">
               <input type="hidden" id="userId" th:value="${session.sessUid}">
               <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
-							<input type="hidden" id="serverPort" th:value="${session.serverPort}">
-			  <input type="hidden" id="serverPort" th:value="${session.serverPort}">
+              <input type="hidden" id="serverPort" th:value="${session.serverPort}">
 							<table class="table">
 								<thead>
 									<tr>
-										<td style="width: 12%; text-align: center;">
-											<img th:src="${user.profileUrl}" th:alt="${user.uname}" width="48" style="border-radius: 30%">
-										</td>
-										<td style="width: 64%;">
+										<td style="width: 13%; ">
+											<img th:src="${user.profileUrl}" th:alt="${user.uname}" width="48" style="border-radius: 30%; text-align: center;">
+										<td style="width: 65%;">
 											<span style="font-weight: bold;" th:text="${user.uname}">로그인 사용자</span>
 											<input type="hidden" id="userId" th:value="${user.uid}">
 										</td>
-										<td style="width: 24%; text-align: right;">
+										<td style="width: 22%; text-align: right;">
 											<i class="fa-solid fa-magnifying-glass me-1"></i>
 											<a href="javascript:void(0);" id="addFriendPopover">
 												<i class="fa-regular fa-square-plus me-1"></i>
@@ -69,7 +62,8 @@
 			</div>
 		</div>
   </div>
-	<div hidden>
+
+  <div hidden>
 		<div id="mypopover-content">
 			<div class="row" style="vertical-align: middle;">
 				<div class="col-7">
@@ -82,6 +76,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

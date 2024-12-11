@@ -1,5 +1,6 @@
 package com.lion.demo.chatting;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@Slf4j
 public class ChattingWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> userSessions = new ConcurrentHashMap<>();
     private final Map<String, String> userStatus = new ConcurrentHashMap<>();
@@ -22,9 +24,9 @@ public class ChattingWebSocketHandler extends TextWebSocketHandler {
         if (userId != null) {
             userSessions.put(userId, session);
             userStatus.put(userId, status);
-            System.out.println("User connected: " + userId + ", status: " + status);
+            log.info("User connected: " + userId + ", status: " + status);
         } else {
-            System.out.println("User ID is null. Closing session.");
+            log.info("User ID is null. Closing session.");
             session.close();
         }
     }
@@ -42,10 +44,12 @@ public class ChattingWebSocketHandler extends TextWebSocketHandler {
 
             WebSocketSession targetSession = userSessions.get(recipientId);
             String targetStatus = userStatus.get(recipientId);      // "home", "chat:maria"
-            if (targetStatus.substring(0, 4).equals("chat"))
-                targetStatus = targetStatus.substring(5);
+//            System.out.println("=============" + targetStatus);
+//            System.out.println("=========userId: " + userId + ", recipientId: " + recipientId);
+
             if (targetSession != null && targetSession.isOpen()) {
-                targetSession.sendMessage(new TextMessage("from " + userId + ": " + msg));
+                if (targetStatus.equals("home") || targetStatus.equals("chat:" + userId))
+                    targetSession.sendMessage(new TextMessage("from " + userId + ": " + msg));
             }
         }
     }
@@ -55,8 +59,18 @@ public class ChattingWebSocketHandler extends TextWebSocketHandler {
         String userId = getUserId(session);
         if (userId != null) {
             userSessions.remove(userId);
-            System.out.println("User disconnected: " + userId);
+            log.debug("User disconnected: " + userId);
         }
+    }
+
+    public int isReadable(String senderUid, String recipientUid) {
+        WebSocketSession targetSession = userSessions.get(recipientUid);
+        if (targetSession != null && targetSession.isOpen()) {
+            String targetStatus = userStatus.get(recipientUid);
+            if (targetStatus.equals("chat:" + senderUid))
+                return 1;
+        }
+        return 0;
     }
 
     private String getUserId(WebSocketSession session) {

@@ -18,7 +18,7 @@ public class ChattingHandshakeInterceptor implements HandshakeInterceptor {
             if (userId != null) {
                 attributes.put("userId", userId);
                 attributes.put("status", status);
-                System.out.println("=========== beforeHandshake(): " + userId + ", status: " + status);
+//                System.out.println("=========== beforeHandshake(): " + userId + ", status: " + status);
             } else {
                 System.out.println("=========== beforeHandshake(): userId is null.");
             }
