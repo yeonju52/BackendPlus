@@ -25,6 +25,7 @@ public class ChattingController {
     @Autowired private ChattingWebSocketHandler webSocketHandler;
     @Autowired private TimeUtil timeUtil;
     @Value("${server.port}") private String serverPort;
+    @Value("${server.ip}") private String serverIp;
 
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
@@ -34,6 +35,7 @@ public class ChattingController {
 
         session.setAttribute("chattingStatus", "home");
         session.setAttribute("serverPort", serverPort);
+        session.setAttribute("serverIp", serverIp);
         session.setAttribute("menu", "chatting");
         return "chatting/home";
     }

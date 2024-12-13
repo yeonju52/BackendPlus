@@ -5,9 +5,11 @@ function connect() {
 	userId = document.getElementById('userId').value;
     const chattingStatus = document.getElementById('chattingStatus').value;
     const serverPort = $('#serverPort').val();
-	socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
+    const serverIp = $('#serverIp').val();
+	// socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
+    socket = new Websocket(`ws://${serverIp}:${serverPort}/chat?userId=${userId}&status=${chattingStatus}`);
 
-	socket.onopen = () => {
+    socket.onopen = () => {
 		console.log('Connected as ' + userId);
 		$('#statusIcon').css({color: 'green', fontWeight: 'bold'});
 	}
