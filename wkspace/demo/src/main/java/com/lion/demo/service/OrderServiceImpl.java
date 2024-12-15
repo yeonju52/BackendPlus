@@ -8,11 +8,10 @@ import com.lion.demo.repository.BookRepository;
 import com.lion.demo.repository.CartRepository;
 import com.lion.demo.repository.OrderRepository;
 import com.lion.demo.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -118,14 +118,22 @@ public class UserController {
         session.setAttribute("sessUid", uid);
         session.setAttribute("sessUname", user.getUname());
         String msg = user.getUname() + "님 환영합니다.";
-        String url;
-        url = "/chatting/home";
+        String url = "/bookEs/list";
 //        if (user.getRole().equals("ROLE_ADMIN")){
 //            url = "/user/list";
 //        }
 //        else {
 //            url = "/book/list";
 //        }
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+        return "common/alertMsg";
+    }
+
+    @GetMapping("/loginFailure")
+    public String loginFailure(Model model) {
+        String msg = "잘못 입력하였습니다.";
+        String url = "/user/login";
         model.addAttribute("msg", msg);
         model.addAttribute("url", url);
         return "common/alertMsg";

@@ -1,6 +1,7 @@
 package com.lion.demo.service;
 
 import com.lion.demo.entity.Book;
+import com.lion.demo.entity.BookEs;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -17,10 +18,11 @@ import java.nio.charset.StandardCharsets;
 public class CsvFileReaderService {
     @Autowired private ResourceLoader resourceLoader;
     @Autowired private BookService bookService;
+    @Autowired private BookEsService bookEsService;
 
     public void csvFileToH2() {
         try {
-            Resource resource = resourceLoader.getResource("classpath:static/data/20241114_yes24_국내도서_새로나온_상품.csv");
+            Resource resource = resourceLoader.getResource("classpath:/static/data/20241114_yes24_국내도서_새로나온_상품.csv");
             try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
                  CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
                 int count = 0;
@@ -46,6 +48,33 @@ public class CsvFileReaderService {
             e.printStackTrace();
         }
     }
-}
 
-//                    Book book = new Book(null, title, author, company, price, imageUrl, summary); // bid에 Null이 안됨
+    public void csvFileToElasticSearch() {
+        try {
+            Resource resource = resourceLoader.getResource("classpath:/static/data/yes24_국내도서_새로나온_상품.csv");
+            try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
+                 CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+                int count = 0;
+                for (CSVRecord record: csvParser) {
+                    String title = record.get("title");
+                    String author = record.get("author");
+                    String company = record.get("company");
+                    String _price = record.get("price");
+                    int price = Integer.parseInt(_price);
+                    String imageUrl = record.get("imageUrl");
+                    String summary = record.get("summary");
+                    BookEs bookEs = BookEs.builder()
+                            .title(title).author(author).company(company).price(price).imageUrl(imageUrl).summary(summary)
+                            .build();
+                    bookEsService.insertBookEs(bookEs);
+
+                    if (count++ % 1000 == 0)
+                        System.out.println("count = " + count);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

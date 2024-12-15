@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long bid;
+    private long bid;       // primary key, auto_increment
 
     private String title;
     private String author;
@@ -22,6 +22,6 @@ public class Book {
     private int price;
     private String imageUrl;
 
-    @Column(length = 8191) // Column's length expands 255 -> 8k
-    private String summary;
+    @Column(length = 8191)
+    private String summary;     // column 길이: 255 -> 8191
 }
