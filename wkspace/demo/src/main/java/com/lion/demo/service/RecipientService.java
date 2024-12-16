@@ -1,5 +1,6 @@
-package com.lion.demo.chatting;
+package com.lion.demo.service;
 
+import com.lion.demo.entity.Recipient;
 import com.lion.demo.entity.User;
 
 import java.util.List;

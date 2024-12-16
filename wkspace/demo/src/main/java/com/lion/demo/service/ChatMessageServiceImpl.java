@@ -1,5 +1,7 @@
-package com.lion.demo.chatting;
+package com.lion.demo.service;
 
+import com.lion.demo.entity.ChatMessage;
+import com.lion.demo.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.lion.demo.chatting;
+package com.lion.demo.entity;
 
 import com.lion.demo.entity.User;
 import jakarta.persistence.*;
@@ -14,18 +14,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Recipient {
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rid;
+    private Long cmid;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "uid", referencedColumnName = "uid")
-    private User user;
+    @JoinColumn(name = "senderUid", referencedColumnName = "uid")
+    private User sender;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "friendUid", referencedColumnName = "uid")
-    private User friend;
+    @JoinColumn(name = "recipientUid", referencedColumnName = "uid")
+    private User recipient;
 
+    private String message;
     private LocalDateTime timestamp;
+    private int hasRead;
 }

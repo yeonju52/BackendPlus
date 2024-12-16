@@ -1,8 +1,11 @@
-package com.lion.demo.chatting;
+package com.lion.demo.controller;
 
-import com.lion.demo.entity.User;
+import com.lion.demo.entity.*;
+import com.lion.demo.service.ChatMessageService;
+import com.lion.demo.service.RecipientService;
 import com.lion.demo.service.UserService;
 import com.lion.demo.util.TimeUtil;
+import com.lion.demo.websocket.ChattingWebSocketHandler;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -141,7 +144,7 @@ public class ChattingController {
                 .sender(sender).recipient(recipient).message(message).timestamp(timestamp).hasRead(0)
                 .build();
         chatMessageService.insertChatMessage(chatMessage);
-//        recipientService.insertFriend(sender, recipient); // recipient (채팅창 명단 만들기 위함)
+//        recipientService.insertFriend(sender, recipient);
         return "redirect:/chatting/mock";
     }
 }

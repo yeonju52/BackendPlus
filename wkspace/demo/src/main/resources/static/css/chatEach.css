@@ -41,7 +41,7 @@
 }
 .message.sent {
 	text-align: right;
-}
+  }
 .message.sent p {
   background-color: #fef083;
 }

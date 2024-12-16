@@ -6,8 +6,10 @@ function connect() {
     const chattingStatus = document.getElementById('chattingStatus').value;
     console.log(chattingStatus);
     const serverPort = $('#serverPort').val();
-	// socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
-    socket = new Websocket(`ws://${serverIp}:${serverPort}/chat?userId=${userId}&status=${chattingStatus}`);
+	const serverIp = $('#serverIp').val();
+    //	socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
+    socket = new WebSocket(`ws://${serverIp}:${serverPort}/chat?userId=${userId}&status=${chattingStatus}`);
+
 	socket.onopen = () => {
 		console.log('Connected as ' + userId);
 		$('#statusIcon').css({color: 'green', fontWeight: 'bold'});
@@ -90,7 +92,7 @@ function updateChatContainer(chatItemsByDate) {
     inputTag.type = "text";
     inputTag.id = "messageInput";
     inputTag.placeholder = "메시지 입력";
-    inputTag.addEventListener("keydown", handleEnterKey);
+    inputTag.addEventListener("keypress", handleEnterKey);
     chatContainer.appendChild(inputTag);
 
     // 스크롤을 가장 아래로 내리기
@@ -98,7 +100,6 @@ function updateChatContainer(chatItemsByDate) {
 }
 
 function handleEnterKey(event) {
-    if (event.isComposing || event.keyCode === 229) return; // 맥북의 경우, 2번 메시지가 날려지는 경우가 있음
 	if (event.key === 'Enter') {
 		event.preventDefault();     // 줄바꿈 방지(기본 엔터 키 동작 방지)
 		sendMessage();
@@ -133,7 +134,7 @@ function sendMessage() {
 
 function sendSignal() {
     const recipientId = document.getElementById('recipientId').value;
-    
+
     // socket 송신 - 상대방에게 내가 접속했음을 알림
     socket.send(recipientId + ':Alive');
 }

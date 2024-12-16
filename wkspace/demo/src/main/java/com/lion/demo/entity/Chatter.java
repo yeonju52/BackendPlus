@@ -1,4 +1,4 @@
-package com.lion.demo.chatting;
+package com.lion.demo.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

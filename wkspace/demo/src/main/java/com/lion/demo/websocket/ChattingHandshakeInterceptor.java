@@ -1,4 +1,4 @@
-package com.lion.demo.chatting;
+package com.lion.demo.websocket;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

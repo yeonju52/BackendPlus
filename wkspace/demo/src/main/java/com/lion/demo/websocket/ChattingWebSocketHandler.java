@@ -1,4 +1,4 @@
-package com.lion.demo.chatting;
+package com.lion.demo.websocket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -77,6 +77,7 @@ public class ChattingWebSocketHandler extends TextWebSocketHandler {
         Object userId = session.getAttributes().get("userId");
         return userId != null ? userId.toString() : null;
     }
+
     private String getStatus(WebSocketSession session) {
         Object status = session.getAttributes().get("status");
         return status != null ? status.toString() : null;

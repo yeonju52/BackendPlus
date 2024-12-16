@@ -1,7 +1,7 @@
 package com.lion.demo.config;
 
-import com.lion.demo.chatting.ChattingHandshakeInterceptor;
-import com.lion.demo.chatting.ChattingWebSocketHandler;
+import com.lion.demo.websocket.ChattingHandshakeInterceptor;
+import com.lion.demo.websocket.ChattingWebSocketHandler;
 import com.lion.demo.websocket.EchoWebSocketHandler;
 import com.lion.demo.websocket.PersonalWebSocketHandler;
 import com.lion.demo.websocket.UserHandshakeInterceptor;

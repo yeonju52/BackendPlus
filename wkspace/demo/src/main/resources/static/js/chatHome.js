@@ -6,10 +6,10 @@ function connect() {
     const chattingStatus = document.getElementById('chattingStatus').value;
     const serverPort = $('#serverPort').val();
     const serverIp = $('#serverIp').val();
-	// socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
-    socket = new Websocket(`ws://${serverIp}:${serverPort}/chat?userId=${userId}&status=${chattingStatus}`);
+//	socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
+    socket = new WebSocket(`ws://${serverIp}:${serverPort}/chat?userId=${userId}&status=${chattingStatus}`);
 
-    socket.onopen = () => {
+	socket.onopen = () => {
 		console.log('Connected as ' + userId);
 		$('#statusIcon').css({color: 'green', fontWeight: 'bold'});
 	}

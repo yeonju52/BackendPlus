@@ -1,72 +1,72 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>WebSocket Personal Messaging</title>
-	<style>input { padding: 3px; }</style>
-	<script>
-		let socket;
-		let userId, recipientId;
+    <meta charset="UTF-8">
+    <title>WebSocket Personal Messaging</title>
+    <style>input { padding: 3px; }</style>
+    <script>
+        let socket;
+        let userId, recipientId;
 
-		function connect() {
-			userId = document.getElementById('userId').value;
-			socket = new WebSocket('ws://localhost:8090/personal?userId=' + userId);
+        function connect() {
+            userId = document.getElementById('userId').value;
+            socket = new WebSocket('ws://localhost:8090/personal?userId=' + userId);
 
-			socket.onopen = () => {
-				console.log('Connected.');
-				document.getElementById('status').innerText = 'Connected.';
-			}
-			socket.onmessage = event => {
-				console.log('Message from server: ' + event.data);
-				const message = document.getElementById('message');
-				message.value += event.data + '\n';
-				const recipient = event.data.split(':')[0].substring(5);
-				document.getElementById('recipientId').value = recipient;
-			}
-			socket.onclose = () => {
-				console.log('Disconnected from the server.');
-				document.getElementById('status').innerText = 'Disconnected.';
-			}
-		}
-		function sendMessage() {
-			recipientId = document.getElementById('recipientId').value.trim();
-			const messageInput = document.getElementById('messageInput').value;
-			if (socket && socket.readyState === socket.OPEN) {
-				socket.send(recipientId + ':' + messageInput);
-				document.getElementById('messageInput').value = '';
-				const message = document.getElementById('message');
-				message.value += 'I wrote: ' + messageInput + '\n';
-			} else {
-				alert('WebSocket is not connected.');
-			}
-		}
-		function disconnect() {
-			if (socket && socket.readyState === socket.OPEN) {
-				socket.close();
-				console.log('Disconnected by client.');
-			} else {
-				alert('WebSocket is not connected.');
-			}
-		}
-		function handleEnterKey(event) {
-			if (event.key === 'Enter') {
-				event.preventDefault();
-				sendMessage();
-			}
-		}
-	</script>
+            socket.onopen = () => {
+                console.log('Connected.');
+                document.getElementById('status').innerText = 'Connected.';
+            }
+            socket.onmessage = event => {
+                console.log('Message from server: ' + event.data);
+                const message = document.getElementById('message');
+                message.value += event.data + '\n';
+                const recipient = event.data.split(':')[0].substring(5);
+                document.getElementById('recipientId').value = recipient;
+            }
+            socket.onclose = () => {
+                console.log('Disconnected from the server.');
+                document.getElementById('status').innerText = 'Disconnected.';
+            }
+        }
+        function sendMessage() {
+            recipientId = document.getElementById('recipientId').value.trim();
+            const messageInput = document.getElementById('messageInput').value;
+            if (socket && socket.readyState === socket.OPEN) {
+                socket.send(recipientId + ':' + messageInput);
+                document.getElementById('messageInput').value = '';
+                const message = document.getElementById('message');
+                message.value += 'I wrote: ' + messageInput + '\n';
+            } else {
+                alert('WebSocket is not connected.');
+            }
+        }
+        function disconnect() {
+            if (socket && socket.readyState === socket.OPEN) {
+                socket.close();
+                console.log('Disconnected by client.');
+            } else {
+                alert('WebSocket is not connected.');
+            }
+        }
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+    </script>
 </head>
 <body style="margin: 40px;">
-<h1>WebSocket - Personal</h1>
-<input type="hidden" id="userId" th:value="${session.sessUid}">
-<p>Status:
-    <span id="status">Connecting ...</span>
-    <button onclick="connect()">연결</button>
-</p>
-<input type="text" id="recipientId" placeholder="상대방의 ID를 입력하세요."><br><br>
-<textarea id="message" rows="10" cols="60" readonly></textarea><br><br>
-<input type="text" id="messageInput" placeholder="Enter your message here" onkeydown="handleEnterKey(event)"><br><br>
-<button onclick="sendMessage()">전송</button>
-<button onclick="disconnect()">연결 해제</button>
+    <h1>WebSocket - Personal</h1>
+    <input type="hidden" id="userId" th:value="${session.sessUid}">
+    <p>Status:
+        <span id="status">Connecting ...</span>
+        <button onclick="connect()">연결</button>
+    </p>
+    <input type="text" id="recipientId" placeholder="상대방의 ID를 입력하세요."><br><br>
+    <textarea id="message" rows="10" cols="60" readonly></textarea><br><br>
+    <input type="text" id="messageInput" placeholder="Enter your message here" onkeydown="handleEnterKey(event)"><br><br>
+    <button onclick="sendMessage()">전송</button>
+    <button onclick="disconnect()">연결 해제</button>
 </body>
 </html>

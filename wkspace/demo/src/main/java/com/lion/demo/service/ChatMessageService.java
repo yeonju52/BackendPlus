@@ -1,4 +1,6 @@
-package com.lion.demo.chatting;
+package com.lion.demo.service;
+
+import com.lion.demo.entity.ChatMessage;
 
 import java.util.List;
 import java.util.Map;

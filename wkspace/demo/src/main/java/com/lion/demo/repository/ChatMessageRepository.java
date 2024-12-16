@@ -1,5 +1,6 @@
-package com.lion.demo.chatting;
+package com.lion.demo.repository;
 
+import com.lion.demo.entity.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
