@@ -1,11 +1,14 @@
 # BackendPlus
 **개발환경: OpenJDK 17, Intelli J IDEA Community Edition**
 
-## 1일차: 사용자 계정 등록 웹 스프링 구현
-- 웹 서버 구축: 포트 변경, DB 연동 ([application.properties](https://github.com/yeonju52/BackendPlus/blob/main/wkspace/demo/src/main/resources/application.properties))
-- 웹 구현 방법: Spring Boot, Lombok, 인터페이스, Path Variable
-- DB 연결해서 CRUD 구현
+## Spring Boot 웹 구현
+1. 인터넷 도서사이트 구현: 사용자계정생성(Oauth2.0)-사용자계정리스트(SecurityConfig) / 웹크롤링-DB 저장-도서리스트 / 도서주문-도서주문통계치
+2. 채팅 구현: Web Socket으로 구현 (서로 다른 세션끼리 통신 가능), 실시간 읽음 처리 구현
+3. ElasticSearch: ElasticSearch를 실행해서 고도화된 검색 기능 사용
+4. 도커 & AWS: Local & AWS, 각각 Docker로 배포 성공
 
-계정등록 페이지             |  계정리스트 페이지
-:-------------------------:|:-------------------------:
-<img width="642" alt="image" src="https://github.com/user-attachments/assets/972a181f-0bda-48b8-9596-d80a9b2ee7b8">  |  <img width="642" alt="image" src="https://github.com/user-attachments/assets/2fbfc66c-29c6-494e-964f-93893d736886">
+## 현재 코드를 실행하려면 서버를 시작하기 전에 ElasticSearch가 실행 중이어야 합니다.
+- Starting Elasticsearch: `bin/elasticsearch`
+
+## 실행 영상 (Click Image -> Youtube)
+  [![YouTube Video](https://img.youtube.com/vi/NmznFVue6oM/3.jpg)](https://youtu.be/NmznFVue6oM)
