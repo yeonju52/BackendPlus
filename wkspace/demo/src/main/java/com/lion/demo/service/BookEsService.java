@@ -3,7 +3,6 @@ package com.lion.demo.service;
 import com.lion.demo.entity.BookEs;
 import com.lion.demo.entity.BookEsDto;
 import com.lion.demo.repository.BookEsRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,13 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Query;
-import org.springframework.data.elasticsearch.core.query.StringQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.lion.demo.util.NlpUtil.buildMatchQuery;
 
 @Service
 public class BookEsService {
@@ -48,26 +47,5 @@ public class BookEsService {
 
     public void insertBookEs(BookEs bookEs) {
         bookEsRepository.save(bookEs);
-    }
-
-    private Query buildMatchQuery(String field, String keyword) {
-        if (keyword.isEmpty()) {
-            return new StringQuery("{\"match_all\": {}}");
-        }
-//        String queryString = String.format(
-//                "{\"match\": {\"%s\": {\"query\": \"%s\", \"fuzziness\": \"AUTO\"}}}",
-        String queryString = String.format("""
-                        {
-                            "match": {
-                                "%s": {
-                                    "query": "%s",
-                                    "fuzziness": "AUTO",
-                                }
-                            }
-                        }        
-                """,
-                field, keyword
-        );
-        return new StringQuery(queryString);
     }
 }

@@ -34,7 +34,7 @@ public class BookEsController {
         for (int i = startPage; i <= endPage; i++)
             pageList.add(i);
 
-        session.setAttribute("menu", "bookEs");
+        session.setAttribute("menu", "elastic");
         session.setAttribute("currentBookEsPage", page);
         model.addAttribute("bookEsDtoList", pagedResult.getContent());
         model.addAttribute("field", field);
@@ -48,7 +48,7 @@ public class BookEsController {
 
     @GetMapping("/detail/{bookId}")
     public String detail(@PathVariable String bookId,
-                         @RequestParam(name="q", defaultValue = "**") String query,
+                         @RequestParam(name="q", defaultValue = "") String query,
                          Model model) {
         BookEs bookEs = bookEsService.findById(bookId);
         if (!query.equals("")) {
